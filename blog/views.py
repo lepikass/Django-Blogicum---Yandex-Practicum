@@ -8,7 +8,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-from django.http import Http404
 
 
 def get_published_posts(category=None):
