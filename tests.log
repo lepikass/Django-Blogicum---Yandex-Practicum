@@ -1,0 +1,69 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.0, pytest-7.1.3, pluggy-1.0.0 -- C:\Users\baraka\Desktop\django_sprint4-main\venv\Scripts\python.exe
+django: settings: blogicum.settings (from ini)
+rootdir: C:\Users\baraka\Desktop\django_sprint4-main, configfile: pytest.ini, testpaths: tests/
+plugins: Faker-12.0.1, django-4.5.2
+collecting ... collected 25 items
+
+tests/test_content.py::TestContent::test_unpublished PASSED              [  4%]
+tests/test_content.py::TestContent::test_only_own_pubs_in_category PASSED [  8%]
+tests/test_content.py::TestContent::test_only_own_pubs_in_profile PASSED [ 12%]
+tests/test_content.py::TestContent::test_unpublished_category PASSED     [ 16%]
+tests/test_content.py::TestContent::test_future_posts PASSED             [ 20%]
+tests/test_content.py::TestContent::test_pagination PASSED               [ 24%]
+tests/test_content.py::TestContent::test_image_visible PASSED            [ 28%]
+tests/test_err_pages.py::test_custom_err_handlers PASSED                 [ 32%]
+tests/test_users.py::test_custom_err_handlers PASSED                     [ 36%]
+tests/test_users.py::test_profile PASSED                                 [ 40%]
+tests/test_comment.py::test_comment_created_at PASSED                    [ 44%]
+tests/test_comment.py::test_comment PASSED                               [ 48%]
+tests/test_comment.py::test_404_on_comment_deleted_post PASSED           [ 52%]
+tests/test_post.py::test_post_created_at PASSED                          [ 56%]
+tests/test_post.py::test_post PASSED                                     [ 60%]
+tests/test_comment.py::TestCommentModelAttrs::test_model_attrs[`post` field] <- tests\conftest.py PASSED [ 64%]
+tests/test_comment.py::TestCommentModelAttrs::test_model_attrs[`author` field] <- tests\conftest.py PASSED [ 68%]
+tests/test_comment.py::TestCommentModelAttrs::test_model_attrs[`text` field] <- tests\conftest.py PASSED [ 72%]
+tests/test_comment.py::TestCommentModelAttrs::test_model_attrs[`created_at` field] <- tests\conftest.py PASSED [ 76%]
+tests/test_emails.py::test_gitignore FAILED                              [ 80%]
+tests/test_emails.py::test_email_backend_settings PASSED                 [ 84%]
+tests/test_err_pages.py::test_csrf_failure_view PASSED                   [ 88%]
+tests/test_post.py::TestPostModelAttrs::test_model_attrs[`image` field] <- tests\conftest.py PASSED [ 92%]
+tests/test_post.py::TestPostModelAttrs::test_model_attrs[`pub_date` field] <- tests\conftest.py PASSED [ 96%]
+tests/test_static_pages.py::test_static_pages_as_cbv PASSED              [100%]
+
+================================== FAILURES ===================================
+_______________________________ test_gitignore ________________________________
+
+    def test_gitignore():
+        try:
+>           with open(
+                settings.BASE_DIR / ".." / ".gitignore",
+                "r",
+                encoding="utf-8",
+                errors="ignore",
+            ) as fh:
+E           FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\baraka\\Desktop\\django_sprint4-main\\..\\.gitignore'
+
+tests\test_emails.py:7: FileNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_gitignore():
+        try:
+            with open(
+                settings.BASE_DIR / ".." / ".gitignore",
+                "r",
+                encoding="utf-8",
+                errors="ignore",
+            ) as fh:
+                gitignore = fh.read()
+        except Exception as e:
+>           raise AssertionError(
+                "При чтении файла `.gitignore` в корне проекта возникла ошибка:\n"
+                f"{type(e).__name__}: {e}"
+            )
+E           AssertionError: При чтении файла `.gitignore` в корне проекта возникла ошибка:
+E           FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\baraka\\Desktop\\django_sprint4-main\\..\\.gitignore'
+
+tests\test_emails.py:15: AssertionError
+=================== 1 failed, 24 passed, 1 warning in 1.56s ===================
