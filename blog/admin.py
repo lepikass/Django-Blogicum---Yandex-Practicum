@@ -18,12 +18,12 @@ class LocationAdmin(admin.ModelAdmin):
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'is_published', 'pub_date', 'category')  # Отображение полей в списке
-    list_filter = ('is_published', 'pub_date', 'category')  # Фильтры для удобства
-    search_fields = ('title', 'text', 'author__username')  # Поиск по заголовку, тексту и автору
-    list_editable = ('is_published',)  # Поле is_published можно редактировать прямо в списке
-    prepopulated_fields = {'title': ('title',)}  # Автоматическое заполнение заголовка
-    date_hierarchy = 'pub_date'  # Навигация по дате
+    list_display = ('title', 'author', 'is_published', 'pub_date', 'category')
+    list_filter = ('is_published', 'pub_date', 'category')
+    search_fields = ('title', 'text', 'author__username')
+    list_editable = ('is_published',)
+    prepopulated_fields = {'title': ('title',)}
+    date_hierarchy = 'pub_date'
 
 
 admin.site.register(Post, PostAdmin)
