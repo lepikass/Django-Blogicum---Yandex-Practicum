@@ -1,26 +1,14 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.utils import timezone
-from .models import Post, Category, Comment
-from .utils import paginate_queryset
 from django.contrib.auth import get_user_model
-from .forms import UserProfileForm, PostForm, CommentForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views import View
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+from django.views import View
 
-
-def get_published_posts(category=None):
-    posts = Post.objects.filter(
-        pub_date__lte=timezone.now(),
-        is_published=True,
-        category__is_published=True
-    )
-    if category:
-        posts = posts.filter(category=category)
-    return posts.annotate(
-        comment_count=Count('comments')
-    ).order_by('-pub_date')
+from .forms import CommentForm, PostForm, UserProfileForm
+from .models import Category, Comment, Post
+from .utils import paginate_queryset, get_published_posts
 
 
 def index(request):
@@ -128,10 +116,22 @@ class EditPostView(LoginRequiredMixin, View):
 
 class DeletePostView(LoginRequiredMixin, View):
     def get(self, request, post_id):
-        post = get_object_or_404(Post, id=post_id, author=request.user)
-        return render(request, 'blog/create.html', {'post': post})
+        post = get_object_or_404(Post, id=post_id)
+        # Проверяем, является ли пользователь автором поста.
+        # Если текущий пользователь не является автором поста,
+        # то ему не разрешено удалять этот пост.
+        if post.author != request.user:
+            # Перенаправляем пользователя на страницу поста,
+            # так как у него нет прав на удаление.
+            return redirect('blog:post_detail', post_id=post.id)
+        return render(request, 'blog/create.html', {
+            'post': post,
+            'is_delete_confirmation': True,
+        })
 
     def post(self, request, post_id):
+        # Пытаемся получить пост по идентификатору и проверяем,
+        # является ли текущий пользователь автором поста.
         post = get_object_or_404(Post, id=post_id, author=request.user)
         post.delete()
         return redirect('blog:profile', username=request.user.username)
